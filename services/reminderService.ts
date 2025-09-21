@@ -12,7 +12,7 @@ interface saveReminder {
 }
 
 export const saveRecipe = async (reminder: Recipe) => {
-    console.log("Saving reminder..........:", reminder);
+    console.log("Saving recipe..........:", reminder);
     const { title, note, date, time, email } = reminder;
     const reminderData: saveReminder = { title, note, date, time };
     if (email) {
@@ -30,34 +30,34 @@ export const saveRecipe = async (reminder: Recipe) => {
 
 export const getRecipes = async (): Promise<Recipe[]> => {
   try {
-    const remindersSnapshot = await getDocs(collection(db, "reminders")); // use "reminders" not "reminder"
-    console.log("Fetched reminders:", remindersSnapshot.docs);
+    const remindersSnapshot = await getDocs(collection(db, "recipes")); // use "reminders" not "reminder"
+    console.log("Fetched recipes:", remindersSnapshot.docs);
     return remindersSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     })) as Recipe[];
   } catch (e) {
-    console.error("Error fetching reminders: ", e);
+    console.error("Error fetching recipes: ", e);
     throw e;
   }
 };
 
 export const updateRecipe = async (id: string, updatedData: Partial<Recipe>) => {
     try {
-        const docRef = doc(db, "reminders", id);
+        const docRef = doc(db, "recipes", id);
         await updateDoc(docRef, updatedData);
-        console.log("Reminder updated!");
+        console.log("Recipe updated!");
     } catch (error) {
-        console.error("Error updating reminder:", error);
+        console.error("Error updating recipe:", error);
     }
 }
 
 export const deleteRecipe = async (id: string) => {
   try {
-    const docRef = doc(db, "reminders", id);
+    const docRef = doc(db, "recipes", id);
     await deleteDoc(docRef);
-    console.log("Reminder deleted!");
+    console.log("Recipe deleted!");
   } catch (error) {
-    console.error("Error deleting reminder:", error);
+    console.error("Error deleting recipe:", error);
   }
 };

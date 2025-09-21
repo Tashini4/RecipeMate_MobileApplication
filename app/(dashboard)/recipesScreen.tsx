@@ -110,7 +110,8 @@ const RecipesScreen = () => {
       category: "quick",
       isFavorite: false,
       difficulty: "Easy"
-    }
+    },
+
   ];
 
   // Filter recipes based on selected category and search query

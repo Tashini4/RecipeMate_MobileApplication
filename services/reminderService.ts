@@ -1,7 +1,6 @@
-import { Reminder } from '../types/reminder';
-import { collection, addDoc, doc } from "firebase/firestore";
-import { db } from "../firebaseConfig"; 
-import { getDocs,deleteDoc,updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
+import { Recipe } from "@/types/recipe";
 
 
 interface saveReminder {
@@ -12,7 +11,7 @@ interface saveReminder {
       email?: string
 }
 
-export const saveReminder = async (reminder: Reminder) => {
+export const saveRecipe = async (reminder: Recipe) => {
     console.log("Saving reminder..........:", reminder);
     const { title, note, date, time, email } = reminder;
     const reminderData: saveReminder = { title, note, date, time };
@@ -29,21 +28,21 @@ export const saveReminder = async (reminder: Reminder) => {
     }
 };
 
-export const getReminders = async (): Promise<Reminder[]> => {
+export const getRecipes = async (): Promise<Recipe[]> => {
   try {
     const remindersSnapshot = await getDocs(collection(db, "reminders")); // use "reminders" not "reminder"
     console.log("Fetched reminders:", remindersSnapshot.docs);
     return remindersSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    })) as Reminder[];
+    })) as Recipe[];
   } catch (e) {
     console.error("Error fetching reminders: ", e);
     throw e;
   }
 };
 
-export const updateRem = async (id: string, updatedData: Partial<Reminder>) => {
+export const updateRecipe = async (id: string, updatedData: Partial<Recipe>) => {
     try {
         const docRef = doc(db, "reminders", id);
         await updateDoc(docRef, updatedData);
@@ -53,7 +52,7 @@ export const updateRem = async (id: string, updatedData: Partial<Reminder>) => {
     }
 }
 
-export const deleteRem = async (id: string) => {
+export const deleteRecipe = async (id: string) => {
   try {
     const docRef = doc(db, "reminders", id);
     await deleteDoc(docRef);

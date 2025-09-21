@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Modal, Alert } from 'react-native';
-import { Recipe } from '../../types/reminder';
+import { Recipe } from '../../types/recipe';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getReminders, saveReminder, updateRem, deleteRem } from '@/services/reminderService';
+import { getRecipes, updateRecipe, saveRecipe } from '@/services/recipeService';
 import { useAuth } from '@/context/AuthContext';
 import { getCurrentUser } from '@/services/authService';
 import { BlurView } from 'expo-blur';
 
-const ReminderApp = () => {
+const RecipeApp = () => {
     const { user, loading } = useAuth()
   const [reminders, setReminders] = useState<Recipe[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -23,7 +23,7 @@ const ReminderApp = () => {
   });
 
   React.useEffect(() => {
-    getAllReminders();
+    getAllRecipes();
   }, []);
 
   const theme = {
@@ -76,7 +76,7 @@ const ReminderApp = () => {
     setModalVisible(true);
   };
 
-  const addReminder = async () => {
+  const addRecipe = async () => {
     try {
       if (!formData.title.trim()) {
         Alert.alert('Error', 'Please enter a title for your reminder');
@@ -101,9 +101,9 @@ const ReminderApp = () => {
         email: formData.email
       };
 
-      await saveReminder(newReminder);
+      await saveRecipe(newReminder);
       Alert.alert('Success', 'Reminder added successfully');
-      getAllReminders();
+      getAllRecipes();
       resetForm();
       setModalVisible(false);
     } catch(error) {
@@ -112,7 +112,7 @@ const ReminderApp = () => {
     }
   };
 
-  const updateExistingReminder = async () => {
+  const updateExistingRecipe = async () => {
     try {
       if (!formData.title.trim()) {
         Alert.alert('Error', 'Please enter a title for your reminder');
@@ -128,9 +128,9 @@ const ReminderApp = () => {
         return;
       }
 
-      await updateRem(formData.id, formData);
+      await updateRecipe(formData.id, formData);
       Alert.alert('Success', 'Reminder updated successfully');
-      getAllReminders();
+      getAllRecipes();
       resetForm();
       setModalVisible(false);
     } catch(error) {
@@ -141,29 +141,29 @@ const ReminderApp = () => {
 
   const handleSave = () => {
     if (isEditing) {
-      updateExistingReminder();
+      updateExistingRecipe();
     } else {
-      addReminder();
+      addRecipe();
     }
   };
 
-  const deleteReminder = async (id: string) => {
+  const deleteRecipe = async (id: string) => {
     try {
-      await deleteRem(id);
+      await deleteRecipe(id);
       Alert.alert('Success', 'Reminder deleted successfully');
-      getAllReminders();
+      getAllRecipes();
     } catch (error) {
       console.error("Error deleting reminder:", error);
       Alert.alert('Error', 'Failed to delete reminder. Please try again.');
     }
   };
   
-  const getAllReminders = async () => {
+  const getAllRecipes = async () => {
     try {
       const email = user ? user.email : await getCurrentUser();
       console.log("Fetching reminders for email:", email);
       if (email) {
-        const reminders = await getReminders();
+        const reminders = await getRecipes();
         const userReminders = reminders.filter(reminder => reminder.email === email);
         console.log("User-specific reminders:", userReminders[0]);
         setReminders(userReminders);
@@ -190,7 +190,7 @@ const ReminderApp = () => {
         <TouchableOpacity onPress={() => openEditModal(item)} style={styles.editButton}>
           <Text style={[styles.editButtonText, { color: colors.accent }]}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => deleteReminder(item.id)} style={styles.deleteButton}>
+        <TouchableOpacity onPress={() => deleteRecipe(item.id)} style={styles.deleteButton}>
           <Text style={[styles.deleteButtonText, { color: '#D84315' }]}>Delete</Text>
         </TouchableOpacity>
       </View>
@@ -485,4 +485,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ReminderApp;
+export default RecipeApp;

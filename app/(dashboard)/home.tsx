@@ -23,7 +23,7 @@ const Home = () => {
   const contactMethods: { id: string; type: string; value: string; icon: 'phone' | 'email' | 'location-on'; action: string }[] = [
     { id: '1', type: 'Phone', value: '+1 (555) 123-FOOD', icon: 'phone', action: 'tel:+15551234567' },
     { id: '2', type: 'Email', value: 'hello@recipeMate.com', icon: 'email', action: 'mailto:hello@recipeMate.com' },
-    { id: '3', type: 'Address', value: '123 Culinary Street, Food City', icon: 'location-on', action: 'https://maps.google.com' },
+    { id: '3', type: 'Address', value: 'Colombo', icon: 'location-on', action: 'https://maps.google.com' },
   ];
 
   return (

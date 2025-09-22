@@ -32,15 +32,16 @@ const RecipesScreen = () => {
   // Sample recipe data
   const recipes = [
     {
-      id: "1",
-      name: "Blueberry Pancakes",
-      prepTime: "20 mins",
-      description: "Fluffy pancakes with fresh blueberries",
-      image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&h=200&fit=crop",
-      category: "breakfast",
-      isFavorite: true,
-      difficulty: "Easy"
-    },
+    id: "1",
+    name: "Blueberry Pancakes",
+    prepTime: "20 mins",
+    description: "Fluffy pancakes with fresh blueberries",
+    image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&h=200&fit=crop",
+    category: "breakfast",
+    isFavorite: true,
+    difficulty: "Easy",
+    ingredients: ["1 cup all-purpose flour", "1 tbsp sugar", "1 tsp baking powder", "1 egg", "1 cup milk", "1/2 cup blueberries", "Butter for cooking"]
+  },
     {
       id: "2",
       name: "Avocado Toast",
@@ -111,7 +112,7 @@ const RecipesScreen = () => {
       isFavorite: false,
       difficulty: "Easy"
     },
-
+    
   ];
 
   // Filter recipes based on selected category and search query

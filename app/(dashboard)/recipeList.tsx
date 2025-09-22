@@ -214,10 +214,20 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
   },
-  headerTitle: { fontSize: 24, fontWeight: '700' },
-  themeToggle: { padding: 8 },
-  themeToggleText: { fontWeight: '600' },
-  recipeList: { flex: 1, padding: 16 },
+  headerTitle: { 
+    fontSize: 24, 
+    fontWeight: '700' 
+  },
+  themeToggle: { 
+    padding: 8 
+  },
+  themeToggleText:{ 
+    fontWeight: '600'
+   },
+  recipeList:  { 
+    flex: 1, 
+    padding: 16 
+  },
   recipeItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -226,30 +236,111 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderWidth: 1,
   },
-  recipeContent: { flex: 1 },
-  recipeTitle: { fontSize: 18, fontWeight: '600', marginBottom: 4 },
-  recipeDescription: { fontSize: 14, marginBottom: 8 },
-  recipeMeta: { flexDirection: 'row' },
-  recipeTime: { fontSize: 12 },
-  actionsContainer: { flexDirection: 'row', alignItems: 'center' },
-  editButton: { padding: 8, marginRight: 8 },
-  editButtonText: { fontWeight: '600' },
-  deleteButton: { padding: 8 },
-  deleteButtonText: { fontWeight: '600' },
-  emptyState: { alignItems: 'center', justifyContent: 'center', padding: 40 },
-  emptyStateText: { fontSize: 16, textAlign: 'center' },
-  addButton: { margin: 16, padding: 16, borderRadius: 8, alignItems: 'center' },
-  addButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
-  modalContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' },
-  modalContent: { width: '90%', padding: 20, borderRadius: 12, borderWidth: 1 },
-  modalTitle: { fontSize: 20, fontWeight: '600', marginBottom: 20, textAlign: 'center' },
-  input: { borderWidth: 1, borderRadius: 8, padding: 12, marginBottom: 16, fontSize: 16 },
-  textArea: { minHeight: 80, textAlignVertical: 'top' },
-  modalButtons: { flexDirection: 'row', justifyContent: 'space-between' },
-  modalButton: { flex: 1, padding: 12, borderRadius: 8, alignItems: 'center', marginHorizontal: 4 },
-  cancelButton: { borderWidth: 1 },
-  cancelButtonText: { fontWeight: '600' },
-  saveButtonText: { color: '#fff', fontWeight: '600' },
+  recipeContent: { 
+    flex: 1 
+  },
+  recipeTitle: { 
+    fontSize: 18, 
+    fontWeight: '600', 
+    marginBottom: 4 
+  },
+  recipeDescription: { 
+    fontSize: 14, 
+    marginBottom: 8 
+  },
+  recipeMeta: { 
+    flexDirection: 'row' 
+  },
+  recipeTime: { 
+    fontSize: 12 
+  },
+  actionsContainer: { 
+    flexDirection: 'row', 
+    alignItems: 'center'
+   },
+  editButton: { 
+    padding: 8, 
+    marginRight: 8 
+  },
+  editButtonText: { 
+    fontWeight: '600' 
+  },
+  deleteButton: { 
+    padding: 8 
+  },
+  deleteButtonText: { 
+    fontWeight: '600' 
+  },
+  emptyState: { 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    padding: 40 
+  },
+  emptyStateText: { 
+    fontSize: 16, 
+    textAlign: 'center' 
+  },
+  addButton: {
+     margin: 16, 
+     padding: 16, 
+     borderRadius: 8, 
+     alignItems: 'center' 
+    },
+  addButtonText: { 
+    color: '#fff', 
+    fontSize: 16, 
+    fontWeight: '600' 
+  },
+  modalContainer: { 
+    flex: 1, 
+    justifyContent: 'center',
+     alignItems: 'center', 
+     backgroundColor: 'rgba(0,0,0,0.5)' 
+    },
+  modalContent: { 
+    width: '90%', 
+    padding: 20, 
+    borderRadius: 12, 
+    borderWidth: 1 
+  },
+  modalTitle: { 
+    fontSize: 20, 
+    fontWeight: '600', 
+    marginBottom: 20, 
+    textAlign: 'center' 
+  },
+  input: { 
+    borderWidth: 1, 
+    borderRadius: 8, 
+    padding: 12, 
+    marginBottom: 16, 
+    fontSize: 16 
+  },
+  textArea: { 
+    minHeight: 80, 
+    textAlignVertical: 'top' 
+  },
+  modalButtons: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between' 
+  },
+  modalButton: { 
+    flex: 1, 
+    padding: 12, 
+    borderRadius: 8, 
+    alignItems: 'center', 
+    marginHorizontal: 4 
+  },
+  cancelButton: { 
+    borderWidth: 1 
+  },
+  cancelButtonText: { 
+    fontWeight: '600' 
+  },
+  saveButtonText: { 
+    color: '#fff', 
+    fontWeight: '600' 
+  },
 });
 
 export default RecipeApp;

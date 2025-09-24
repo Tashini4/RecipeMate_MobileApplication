@@ -5,5 +5,6 @@ export type  Recipe = {
       date: string,
       time: string,
       email?: string
+      image?: string
 };  
     

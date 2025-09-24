@@ -258,13 +258,38 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
   },
-  backButton: { padding: 8, borderRadius: 20, backgroundColor: "#f8f8f8" },
-  headerTitle: { fontSize: 24, fontWeight: "800", color: "#000", letterSpacing: -0.5 },
-  scrollView: { flex: 1 },
-  scrollContent: { padding: 20, paddingBottom: 40 },
-  profileSection: { alignItems: "center" },
-  profileImageContainer: { position: "relative", marginBottom: 24 },
-  profileImage: { width: 120, height: 120, borderRadius: 60, borderWidth: 3, borderColor: "#f8f8f8" },
+  backButton: { 
+    padding: 8, 
+    borderRadius: 20, 
+    backgroundColor: "#f8f8f8" 
+  },
+  headerTitle: { 
+    fontSize: 24, 
+    fontWeight: "800", 
+    color: "#000", 
+    letterSpacing: -0.5 
+  },
+  scrollView: { 
+    flex: 1 
+  },
+  scrollContent: { 
+    padding: 20, 
+    paddingBottom: 40 
+  },
+  profileSection: { 
+    alignItems: "center" 
+  },
+  profileImageContainer: { 
+    position: "relative", 
+    marginBottom: 24 
+  },
+  profileImage: { 
+    width: 120, 
+    height: 120, 
+    borderRadius: 60, 
+    borderWidth: 3, 
+    borderColor: "#f8f8f8" 
+  },
   editImageButton: {
     position: "absolute",
     bottom: 0,
@@ -278,20 +303,87 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#fff",
   },
-  editButton: { backgroundColor: "#000", paddingHorizontal: 24, paddingVertical: 12, borderRadius: 25, marginBottom: 24 },
-  editButtonText: { color: "#fff", fontWeight: "700", fontSize: 16 },
-  form: { width: "100%", marginBottom: 24 },
-  inputGroup: { marginBottom: 20 },
-  label: { fontSize: 16, fontWeight: "600", color: "#000", marginBottom: 8 },
-  input: { backgroundColor: "#f8f8f8", padding: 16, borderRadius: 12, borderWidth: 1, borderColor: "#e0e0e0", fontSize: 16, color: "#000" },
-  textArea: { minHeight: 100, textAlignVertical: "top" },
-  infoCardsContainer: { width: "100%", gap: 16, marginBottom: 30 },
-  infoCard: { flexDirection: "row", alignItems: "center", backgroundColor: "#f8f8f8", padding: 20, borderRadius: 16, borderWidth: 1, borderColor: "#e0e0e0" },
-  infoCardContent: { marginLeft: 16, flex: 1 },
-  infoCardTitle: { fontSize: 14, color: "#666", fontWeight: "500", marginBottom: 4 },
-  infoCardValue: { fontSize: 18, color: "#000", fontWeight: "600" },
-  logoutButton: { backgroundColor: "#FF3B30", paddingVertical: 16, borderRadius: 12, marginTop: 20, width: "100%", alignItems: "center", marginBottom: 30 },
-  logoutButtonText: { color: "#fff", fontSize: 16, fontWeight: "700" },
+  editButton: { 
+    backgroundColor: "#000", 
+    paddingHorizontal: 24, 
+    paddingVertical: 12, 
+    borderRadius: 25, 
+    marginBottom: 24 
+  },
+  editButtonText: { 
+    color: "#fff", 
+    fontWeight: "700", 
+    fontSize: 16 
+  },
+  form: { 
+    width: "100%",
+    marginBottom: 24 
+  },
+  inputGroup: { 
+    marginBottom: 20 
+  },
+  label: { 
+    fontSize: 16, 
+    fontWeight: "600", 
+    color: "#000",
+    marginBottom: 8 
+  },
+  input: { 
+    backgroundColor: "#f8f8f8", 
+    padding: 16, 
+    borderRadius: 12, 
+    borderWidth: 1, 
+    borderColor: "#e0e0e0", 
+    fontSize: 16, 
+    color: "#000" 
+  },
+  textArea: { 
+    minHeight: 100, 
+    textAlignVertical: "top" 
+  },
+  infoCardsContainer: { 
+    width: "100%", 
+    gap: 16, 
+    marginBottom: 30 
+  },
+  infoCard: { 
+    flexDirection: "row", 
+    alignItems: "center", 
+    backgroundColor: "#f8f8f8", 
+    padding: 20, 
+    borderRadius: 16, 
+    borderWidth: 1, 
+    borderColor: "#e0e0e0" 
+  },
+  infoCardContent: { 
+    marginLeft: 16, 
+    flex: 1 
+  },
+  infoCardTitle: { 
+    fontSize: 14, 
+    color: "#666", 
+    fontWeight: "500", 
+    marginBottom: 4 
+  },
+  infoCardValue: { 
+    fontSize: 18, 
+    color: "#000", 
+    fontWeight: "600" 
+  },
+  logoutButton: { 
+    backgroundColor: "#FF3B30", 
+    paddingVertical: 16, 
+    borderRadius: 12, 
+    marginTop: 20, 
+    width: "100%", 
+    alignItems: "center", 
+    marginBottom: 30 
+  },
+  logoutButtonText: { 
+    color: "#fff", 
+    fontSize: 16, 
+    fontWeight: "700" 
+  },
 });
 
 export default Account;

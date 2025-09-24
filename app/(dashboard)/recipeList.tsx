@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Modal, Alert } from 'react-native';
-
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Modal,
+  Alert,
+  Image,
+} from 'react-native';
 import { useAuth } from '@/context/AuthContext';
 import { getCurrentUser } from '@/services/authService';
 import { Recipe } from '@/types/recipe';
-import { deleteRecipe, getRecipes } from '@/services/recipeService';
+import { deleteRecipe, getRecipes, saveRecipe, updateRecipe } from '@/services/recipeService';
 
 const RecipeApp = () => {
   const { user } = useAuth();
@@ -18,7 +27,8 @@ const RecipeApp = () => {
     note: '',
     date: '',
     time: '',
-    email: ''
+    email: '',
+    image: '',
   });
 
   React.useEffect(() => {
@@ -51,7 +61,7 @@ const RecipeApp = () => {
   };
 
   const resetForm = () => {
-    setFormData({ id: '', title: '', note: '', date: '', time: '', email: '' });
+    setFormData({ id: '', title: '', note: '', date: '', time: '', email: '', image: '' });
     setIsEditing(false);
   };
 
@@ -66,30 +76,91 @@ const RecipeApp = () => {
       const email = user ? user.email : await getCurrentUser();
       if (email) {
         const reminders = await getRecipes();
-        const userRecipes = reminders.filter(r => r.email === email);
+        const userRecipes = reminders.filter((r) => r.email === email);
         setRecipes(userRecipes);
       } else {
         Alert.alert('Error', 'No user is currently logged in');
       }
     } catch (error) {
-      console.error("Error fetching recipes:", error);
+      console.error('Error fetching recipes:', error);
     }
   };
 
+  const handleSaveRecipe = async () => {
+    try {
+      const email = user ? user.email : await getCurrentUser();
+      if (!email) {
+        Alert.alert('Error', 'No user logged in');
+        return;
+      }
+
+      const newRecipe: Recipe = { ...formData, email };
+
+      if (isEditing) {
+        await updateRecipe(newRecipe.id, newRecipe);
+        Alert.alert('Success', 'Recipe updated successfully');
+      } else {
+        await saveRecipe(newRecipe);
+        Alert.alert('Success', 'Recipe added successfully');
+      }
+
+      resetForm();
+      setModalVisible(false);
+      getAllRecipes();
+    } catch (error) {
+      console.error('Error saving recipe:', error);
+      Alert.alert('Error', 'Failed to save recipe');
+    }
+  };
+
+  const handleDeleteRecipe = (id: string) => {
+    Alert.alert('Confirm Delete', 'Are you sure you want to delete this recipe?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await deleteRecipe(id);
+            getAllRecipes();
+            Alert.alert('Deleted', 'Recipe has been deleted');
+          } catch (error) {
+            console.error('Error deleting recipe:', error);
+            Alert.alert('Error', 'Failed to delete recipe');
+          }
+        },
+      },
+    ]);
+  };
+
   const renderRecipeItem = (item: Recipe) => (
-    <View key={item.id} style={[styles.recipeItem, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+    <View
+      key={item.id}
+      style={[styles.recipeItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
+    >
+      {item.image ? (
+        <Image source={{ uri: item.image }} style={styles.recipeImage} />
+      ) : (
+        <View style={[styles.recipeImagePlaceholder, { backgroundColor: colors.border }]}>
+          <Text style={{ color: colors.secondaryText }}>No Image</Text>
+        </View>
+      )}
       <View style={styles.recipeContent}>
         <Text style={[styles.recipeTitle, { color: colors.text }]}>{item.title}</Text>
-        {item.note ? <Text style={[styles.recipeDescription, { color: colors.secondaryText }]}>{item.note}</Text> : null}
-        <View style={styles.recipeMeta}>
-          {item.time ? <Text style={[styles.recipeTime, { color: colors.secondaryText }]}>⏱ {item.time}</Text> : null}
-        </View>
+        {item.note ? (
+          <Text style={[styles.recipeDescription, { color: colors.secondaryText }]} numberOfLines={2}>
+            {item.note}
+          </Text>
+        ) : null}
+        {item.time ? (
+          <Text style={[styles.recipeTime, { color: colors.secondaryText }]}>⏱ {item.time}</Text>
+        ) : null}
       </View>
       <View style={styles.actionsContainer}>
         <TouchableOpacity onPress={() => openEditModal(item)} style={styles.editButton}>
           <Text style={[styles.editButtonText, { color: colors.accent }]}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => deleteRecipe(item.id)} style={styles.deleteButton}>
+        <TouchableOpacity onPress={() => handleDeleteRecipe(item.id)} style={styles.deleteButton}>
           <Text style={[styles.deleteButtonText, { color: '#e53935' }]}>Delete</Text>
         </TouchableOpacity>
       </View>
@@ -142,11 +213,19 @@ const RecipeApp = () => {
           setModalVisible(false);
         }}
       >
-        <View style={[styles.modalContainer, { backgroundColor: colors.background }]}>
+        <View style={styles.modalContainer}>
           <View style={[styles.modalContent, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <Text style={[styles.modalTitle, { color: colors.text }]}>
               {isEditing ? 'Edit Recipe' : 'Add New Recipe'}
             </Text>
+
+            <TextInput
+              style={[styles.input, { backgroundColor: colors.background, color: colors.text, borderColor: colors.border }]}
+              placeholder="Recipe Image URL"
+              placeholderTextColor={colors.secondaryText}
+              value={formData.image}
+              onChangeText={(text) => handleInputChange('image', text)}
+            />
 
             <TextInput
               style={[styles.input, { backgroundColor: colors.background, color: colors.text, borderColor: colors.border }]}
@@ -193,7 +272,10 @@ const RecipeApp = () => {
                 <Text style={[styles.cancelButtonText, { color: colors.text }]}>Cancel</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.modalButton, { backgroundColor: colors.accent }]}>
+              <TouchableOpacity
+                style={[styles.modalButton, { backgroundColor: colors.accent }]}
+                onPress={handleSaveRecipe}
+              >
                 <Text style={styles.saveButtonText}>{isEditing ? 'Update Recipe' : 'Save Recipe'}</Text>
               </TouchableOpacity>
             </View>
@@ -214,133 +296,60 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
   },
-  headerTitle: { 
-    fontSize: 24, 
-    fontWeight: '700' 
-  },
-  themeToggle: { 
-    padding: 8 
-  },
-  themeToggleText:{ 
-    fontWeight: '600'
-   },
-  recipeList:  { 
-    flex: 1, 
-    padding: 16 
-  },
+  headerTitle: { fontSize: 24, fontWeight: '700' },
+  themeToggle: { padding: 8 },
+  themeToggleText: { fontWeight: '600' },
+  recipeList: { flex: 1, padding: 16 },
   recipeItem: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
-    borderRadius: 8,
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 10,
     marginBottom: 12,
     borderWidth: 1,
   },
-  recipeContent: { 
-    flex: 1 
+  recipeImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    marginRight: 12,
   },
-  recipeTitle: { 
-    fontSize: 18, 
-    fontWeight: '600', 
-    marginBottom: 4 
-  },
-  recipeDescription: { 
-    fontSize: 14, 
-    marginBottom: 8 
-  },
-  recipeMeta: { 
-    flexDirection: 'row' 
-  },
-  recipeTime: { 
-    fontSize: 12 
-  },
-  actionsContainer: { 
-    flexDirection: 'row', 
-    alignItems: 'center'
-   },
-  editButton: { 
-    padding: 8, 
-    marginRight: 8 
-  },
-  editButtonText: { 
-    fontWeight: '600' 
-  },
-  deleteButton: { 
-    padding: 8 
-  },
-  deleteButtonText: { 
-    fontWeight: '600' 
-  },
-  emptyState: { 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    padding: 40 
-  },
-  emptyStateText: { 
-    fontSize: 16, 
-    textAlign: 'center' 
-  },
-  addButton: {
-     margin: 16, 
-     padding: 16, 
-     borderRadius: 8, 
-     alignItems: 'center' 
-    },
-  addButtonText: { 
-    color: '#fff', 
-    fontSize: 16, 
-    fontWeight: '600' 
-  },
-  modalContainer: { 
-    flex: 1, 
+  recipeImagePlaceholder: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    marginRight: 12,
     justifyContent: 'center',
-     alignItems: 'center', 
-     backgroundColor: 'rgba(0,0,0,0.5)' 
-    },
-  modalContent: { 
-    width: '90%', 
-    padding: 20, 
-    borderRadius: 12, 
-    borderWidth: 1 
+    alignItems: 'center',
   },
-  modalTitle: { 
-    fontSize: 20, 
-    fontWeight: '600', 
-    marginBottom: 20, 
-    textAlign: 'center' 
+  recipeContent: { flex: 1 },
+  recipeTitle: { fontSize: 18, fontWeight: '600', marginBottom: 4 },
+  recipeDescription: { fontSize: 14, marginBottom: 4 },
+  recipeTime: { fontSize: 12 },
+  actionsContainer: { flexDirection: 'row', alignItems: 'center' },
+  editButton: { padding: 6, marginRight: 6 },
+  editButtonText: { fontWeight: '600' },
+  deleteButton: { padding: 6 },
+  deleteButtonText: { fontWeight: '600' },
+  emptyState: { alignItems: 'center', justifyContent: 'center', padding: 40 },
+  emptyStateText: { fontSize: 16, textAlign: 'center' },
+  addButton: { margin: 16, padding: 16, borderRadius: 8, alignItems: 'center' },
+  addButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
-  input: { 
-    borderWidth: 1, 
-    borderRadius: 8, 
-    padding: 12, 
-    marginBottom: 16, 
-    fontSize: 16 
-  },
-  textArea: { 
-    minHeight: 80, 
-    textAlignVertical: 'top' 
-  },
-  modalButtons: { 
-    flexDirection: 'row', 
-    justifyContent: 'space-between' 
-  },
-  modalButton: { 
-    flex: 1, 
-    padding: 12, 
-    borderRadius: 8, 
-    alignItems: 'center', 
-    marginHorizontal: 4 
-  },
-  cancelButton: { 
-    borderWidth: 1 
-  },
-  cancelButtonText: { 
-    fontWeight: '600' 
-  },
-  saveButtonText: { 
-    color: '#fff', 
-    fontWeight: '600' 
-  },
+  modalContent: { width: '90%', padding: 20, borderRadius: 12, borderWidth: 1 },
+  modalTitle: { fontSize: 20, fontWeight: '600', marginBottom: 20, textAlign: 'center' },
+  input: { borderWidth: 1, borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 16 },
+  textArea: { minHeight: 80, textAlignVertical: 'top' },
+  modalButtons: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 },
+  modalButton: { flex: 1, padding: 12, borderRadius: 8, alignItems: 'center', marginHorizontal: 4 },
+  cancelButton: { borderWidth: 1 },
+  cancelButtonText: { fontWeight: '600' },
+  saveButtonText: { color: '#fff', fontWeight: '600' },
 });
 
 export default RecipeApp;

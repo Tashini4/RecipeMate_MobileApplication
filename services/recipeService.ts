@@ -9,6 +9,7 @@ interface saveRecipe {
       date: string,
       time: string,
       email?: string
+      image?: string
 }
 
 export const saveRecipe = async (reminder: Recipe) => {

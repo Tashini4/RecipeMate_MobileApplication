@@ -8,7 +8,7 @@
   - user-friendly interface with intuitive navigation
 
 ## Link
-- apk - 
+- apk - https://expo.dev/accounts/tashi2002/projects/RecipeMate/builds/5887d41c-e303-43bb-954b-e1bc9a2038ea
 - YouTube Viedo - https://youtu.be/T5M3EyiKXqY
    
    
